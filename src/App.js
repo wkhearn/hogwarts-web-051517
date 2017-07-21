@@ -1,105 +1,73 @@
 import React, { Component } from 'react';
 import './App.css';
 import Nav from './components/Nav'
+import Filters from './components/Filters'
 import HogsList from './components/HogsList'
 import hogs from './porkers_data'
 
 class App extends Component {
-
   state = {
     hogs,
-    filter: ''
+    sortBy: ''
   }
 
-    resetHogs = () => {
-        this.setState({
-            hogs
-        })
-    }
-
-  applyGrease = () => {
+  resetHogs = () => {
     this.setState({
-      hogs:this.state.hogs.filter(hog => hog.greased === true),
-
+      hogs
     })
   }
 
-  handleCheck = (e) => {
-  if(e.target.checked){
-        this.applyGrease()}
-        else { this.resetHogs()
+  applyGreasedFilter = () => {
+    this.setState({
+      hogs:this.state.hogs.filter(hog => hog.greased === true)
+    })
+  }
+
+  handleCheckbox = (event) => {
+    if(event.target.checked){
+      this.applyGreasedFilter()
+    } else {
+      this.resetHogs()
     }
   }
 
-    // componentDidUpdate = (props, prevState) => {
-    //     const isSame = this.state.hogs.every((e,i) => e.name === prevState.hogs[i].name)
-    //     console.log(isSame)
-    //     if (this.state.greasedHogs) {
-    //             this.applyGrease()
-    //     }
-    // }
-
-  handleSelect = (event) => {
-      this.setState({
-          filter: event.target.value
-      })
-      if(event.target.value === 'name'){
-        this.sortNames()
-      } else {
-        this.sortWeight()
-      }
+  sortByNames = () => {
+    this.state.hogs.sort(function (a,b) {
+      if(a.name < b.name) return -1
+      if(a.name > b.name) return 1
+      return 0
+    })
   }
 
-  sortNames = () => {
-      this.state.hogs.sort(function (a,b) {
-          if(a.name < b.name) return -1
-          if(a.name > b.name) return 1
-          return 0
-      })
+  sortByWeight = () => {
+    this.state.hogs.sort(function (a,b) {
+      if(a.weight < b.weight) return -1
+      if(a.weight > b.weight) return 1
+      return 0
+    })
   }
 
-    sortWeight = () => {
-        this.state.hogs.sort(function (a,b) {
-            if(a.weight < b.weight) return -1
-            if(a.weight > b.weight) return 1
-            return 0
-        })
+  handleSort = (event) => {
+    this.setState({
+      sortBy: event.target.value
+    })
+    if(event.target.value === 'name'){
+      this.sortByNames()
+    } else {
+      this.sortByWeight()
     }
-
-
+  }
 
   render() {
     return (
       <div className="App">
-
         < Nav />
-
-        <div className="ui container">
-            <label name="label">Greasy Pig? </label>
-            <input type="checkbox"
-                   onClick={this.handleCheck}
-                   value="Is Greasy" />
-
-            <label>Sort By </label>
-            <select name="type" id="type" value={this.state.filter} onChange={this.handleSelect}>
-                <option value=""></option>
-                <option value="name">Name</option>
-                <option value="weight">Weight</option>
-            </select>
-
-        </div>
-
-
+        <Filters handleSort={this.handleSort} handleCheckbox={this.handleCheckbox} sortBy={this.state.sortBy} />
         <br/>
-        <br/>
-        <br/>
-
-
-        < HogsList hogs={this.state.hogs}/>
-
+        < HogsList hogs={this.state.hogs} />
       </div>
     )
   }
 }
 
-export default App;
+export default App

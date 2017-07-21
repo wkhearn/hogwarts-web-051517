@@ -1,18 +1,17 @@
 import React from 'react'
-import { Card, Image } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
 
-const Hog = (props) => (
-    <Card >
-        <Image src={"./hog-imgs/"+`${props.hog.name.toLowerCase().split(" ").join("_")}` + ".jpg"} alt="" />
-        <Card.Content>
-            <Card.Header>Name: {props.hog.name}</Card.Header>
-            <Card.Meta>Weight: {props.hog.weight}</Card.Meta>
-            <Card.Meta>Specialty: {props.hog.specialty}</Card.Meta>
-            <Card.Meta>Greased: {props.hog.greased.toString()}</Card.Meta>
-            <Card.Meta>highest medal achieved: {props.hog.medal}</Card.Meta>
-            <Card.Description>Will Be Bacon: true</Card.Description>
-        </Card.Content>
-    </Card>
-)
+const Hog = (props) => {
+  return (
+    <div className="ui eight wide column card">
+      <img src={"./hog-imgs/"+`${props.hog.name.toLowerCase().split(" ").join("_")}` + ".jpg"} />
+      <h1>Name: {props.hog.name}</h1>
+      <p>Weight: {props.hog.weight}</p>
+      <p>Specialty: {props.hog.specialty}</p>
+      <p>Greased: {props.hog.greased.toString()}</p>
+      <p>Highest medal achieved: {props.hog.medal}</p>
+    </div>
+  )
+}
 
 export default Hog
